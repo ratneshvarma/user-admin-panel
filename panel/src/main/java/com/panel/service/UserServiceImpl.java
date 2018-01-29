@@ -11,7 +11,7 @@ import com.panel.repository.IUserRepository;
 
 @Service
 public class UserServiceImpl implements IUserService {
-  
+
 	@Autowired
 	private IUserRepository userRepository;
 
@@ -29,13 +29,13 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public User addUser(UserDto userDto) {
-		
+
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
 		user.setMobile(userDto.getMobile());
 		user.setUserRole(userDto.getUserRole());
-				
+
 		return userRepository.save(user);
 	}
 
@@ -46,28 +46,29 @@ public class UserServiceImpl implements IUserService {
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
 		user.setMobile(userDto.getMobile());
-		user.setUserRole(userDto.getUserRole());		
+		user.setUserRole(userDto.getUserRole());
 		return userRepository.save(user);
 	}
+
 	@Override
 	public boolean deleteUser(Long id) {
 		userRepository.delete(id);
 		return true;
 	}
-	
+
 	@Override
 	public User userAssembler(UserDto userDto) {
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
 		user.setMobile(userDto.getMobile());
-		user.setUserRole(user.getUserRole());	
+		user.setUserRole(user.getUserRole());
 		return user;
 	}
 
 	@Override
 	public UserDto userDisassembler(User user) {
-		UserDto userDto= new UserDto();
+		UserDto userDto = new UserDto();
 		userDto.setFirstName(user.getFirstName());
 		userDto.setLastName(user.getLastName());
 		userDto.setMobile(user.getMobile());
@@ -77,8 +78,8 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Boolean exist(Long id) {
-		Boolean exist = userRepository.exists(id);
-		return exist;
+		Boolean isExist = userRepository.exists(id);
+		return isExist;
 	}
 
 	@Override
@@ -88,13 +89,13 @@ public class UserServiceImpl implements IUserService {
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
 		user.setMobile(userDto.getMobile());
-		user.setUserRole(user.getUserRole());	
+		user.setUserRole(user.getUserRole());
 		return user;
 	}
 
 	@Override
 	public UserDto userDisassemblerWithId(User user) {
-		UserDto userDto= new UserDto();
+		UserDto userDto = new UserDto();
 		userDto.setUserId(user.getUserId());
 		userDto.setFirstName(user.getFirstName());
 		userDto.setLastName(user.getLastName());
@@ -103,10 +104,4 @@ public class UserServiceImpl implements IUserService {
 		return userDto;
 	}
 
-
-
-	
-
-	
-	
 }

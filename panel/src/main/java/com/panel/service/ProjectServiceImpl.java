@@ -11,7 +11,7 @@ import com.panel.repository.IProjectRepository;
 
 @Service
 public class ProjectServiceImpl implements IProjectService {
-	
+
 	@Autowired
 	private IProjectRepository projectRepository;
 
@@ -50,8 +50,8 @@ public class ProjectServiceImpl implements IProjectService {
 
 	@Override
 	public Boolean isExistProject(Long id) {
-		Boolean exist=projectRepository.exists(id);
-		return exist;
+		Boolean isExist = projectRepository.exists(id);
+		return isExist;
 	}
 
 	@Override
@@ -65,6 +65,25 @@ public class ProjectServiceImpl implements IProjectService {
 	@Override
 	public ProjectDto projectDisassembler(Project project) {
 		ProjectDto projectDto = new ProjectDto();
+		projectDto.setProjectTitle(project.getProjectTitle());
+		projectDto.setProjectDescription(project.getProjectDescription());
+		return projectDto;
+	}
+
+	@Override
+	public Project projectAssemblerWithId(ProjectDto projectDto) {
+		Project project = new Project();
+		project.setProjectId(projectDto.getProjectId());
+		project.setProjectTitle(projectDto.getProjectTitle());
+		project.setProjectDescription(projectDto.getProjectDescription());
+		return project;
+
+	}
+
+	@Override
+	public ProjectDto projectDisassemblerWithId(Project project) {
+		ProjectDto projectDto = new ProjectDto();
+		projectDto.setProjectId(project.getProjectId());
 		projectDto.setProjectTitle(project.getProjectTitle());
 		projectDto.setProjectDescription(project.getProjectDescription());
 		return projectDto;

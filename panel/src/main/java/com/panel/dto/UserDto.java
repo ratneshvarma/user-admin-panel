@@ -4,10 +4,10 @@ import javax.validation.constraints.NotNull;
 
 public class UserDto {
 	private Long userId;
-	@NotNull(message="firstName should not be blank")
+	@NotNull(message = "firstName should not be blank")
 	private String firstName;
 	private String lastName;
-	@NotNull(message="userRole should not be blank")
+	@NotNull(message = "userRole should not be blank")
 	private String userRole;
 	private String mobile;
 

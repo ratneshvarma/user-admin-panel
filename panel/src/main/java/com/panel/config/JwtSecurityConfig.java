@@ -26,35 +26,33 @@ import com.panel.security.JwtSuccessHandler;
 @Configuration
 public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtAuthenticationProvider authenticationProvider;
-    @Autowired
-    private JwtAuthenticationEntryPoint entryPoint;
+	@Autowired
+	private JwtAuthenticationProvider authenticationProvider;
+	@Autowired
+	private JwtAuthenticationEntryPoint entryPoint;
 
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(Collections.singletonList(authenticationProvider));
-    }
+	@Bean
+	public AuthenticationManager authenticationManager() {
+		return new ProviderManager(Collections.singletonList(authenticationProvider));
+	}
 
-    @Bean
-    public JwtAuthenticationTokenFilter authenticationTokenFilter() {
-        JwtAuthenticationTokenFilter filter = new JwtAuthenticationTokenFilter();
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(new JwtSuccessHandler());
-        return filter;
-    }
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	public JwtAuthenticationTokenFilter authenticationTokenFilter() {
+		JwtAuthenticationTokenFilter filter = new JwtAuthenticationTokenFilter();
+		filter.setAuthenticationManager(authenticationManager());
+		filter.setAuthenticationSuccessHandler(new JwtSuccessHandler());
+		return filter;
+	}
 
-        http.csrf().disable()
-                .authorizeRequests().antMatchers(URL_WITH_TOKEN).authenticated()
-                .and()
-                .exceptionHandling().authenticationEntryPoint(entryPoint)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
 
-        http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.headers().cacheControl();
+		http.csrf().disable().authorizeRequests().antMatchers(URL_WITH_TOKEN).authenticated().and().exceptionHandling()
+				.authenticationEntryPoint(entryPoint).and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-    }
+		http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.headers().cacheControl();
+
+	}
 }

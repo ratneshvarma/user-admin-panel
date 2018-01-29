@@ -18,22 +18,26 @@ import static com.panel.constant.SecurityConstants.URL_TO_FILTER;
 import java.io.IOException;;
 
 public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessingFilter {
-    public JwtAuthenticationTokenFilter() {
-        super(URL_TO_FILTER);
-    }
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
-        String header = httpServletRequest.getHeader(HEADER_VALUE);
-        if (header == null || !header.startsWith(TOKEN_PREFIX)) {
-            throw new RuntimeException(TOKEN_MISSING_ERROR);
-        }
-        String authenticationToken = header.substring(TOKEN_PREFIX_LENGHT);
-        JwtAuthenticationTokenDto token = new JwtAuthenticationTokenDto(authenticationToken);
-        return getAuthenticationManager().authenticate(token);
-    }
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
-        chain.doFilter(request, response);
-    }
+	public JwtAuthenticationTokenFilter() {
+		super(URL_TO_FILTER);
+	}
+
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
+		String header = httpServletRequest.getHeader(HEADER_VALUE);
+		if (header == null || !header.startsWith(TOKEN_PREFIX)) {
+			throw new RuntimeException(TOKEN_MISSING_ERROR);
+		}
+		String authenticationToken = header.substring(TOKEN_PREFIX_LENGHT);
+		JwtAuthenticationTokenDto token = new JwtAuthenticationTokenDto(authenticationToken);
+		return getAuthenticationManager().authenticate(token);
+	}
+
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authResult) throws IOException, ServletException {
+		super.successfulAuthentication(request, response, chain, authResult);
+		chain.doFilter(request, response);
+	}
 }

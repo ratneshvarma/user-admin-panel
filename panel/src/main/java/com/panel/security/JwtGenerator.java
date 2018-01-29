@@ -25,11 +25,13 @@ public class JwtGenerator {
 		Claims claims = Jwts.claims().setSubject(user.getFirstName());
 		claims.put("userId", String.valueOf(user.getUserId()));
 		claims.put("userRole", user.getUserRole());
-//		System.out.println("Findd========" + user.getUserRole() + "" + "======" + String.valueOf(user.getUserId())
-//				+ "=====" + user.getFirstName() + "=====" + "=====" + user.getLastName());
+		// System.out.println("Findd========" + user.getUserRole() + "" + "======" +
+		// String.valueOf(user.getUserId())
+		// + "=====" + user.getFirstName() + "=====" + "=====" + user.getLastName());
 		User userEntity = userService.findUserById(user.getUserId());
 		UserDto userDto = userService.userDisassembler(userEntity);
-//		System.out.println("Entity Id========" + userService.findUserById(user.getUserId()));
+		// System.out.println("Entity Id========" +
+		// userService.findUserById(user.getUserId()));
 		if (userDto != null && userDto.getUserRole().equals("admin")) {
 			System.out.println("role======" + userDto.getUserRole());
 			String token = Jwts.builder().setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
