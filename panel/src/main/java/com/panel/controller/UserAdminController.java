@@ -1,5 +1,6 @@
 package com.panel.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -25,58 +26,94 @@ public class UserAdminController {
 
 	@RequestMapping(value = "/projects", method = RequestMethod.GET)
 	public ResponseData allProjects() {
-		List<Project> list = (List<Project>) projectService.findAllProject();
-		if (!list.isEmpty()) {
-			ResponseData responseData = new ResponseData(HttpStatus.OK.value(), "Success", list);
-			return responseData;
-		} else {
-			ResponseData responseData = new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found", list);
-			return responseData;
+		ResponseData responseData = null;
+		try {
+			List<Project> list = (List<Project>) projectService.findAllProject();
+			if (!list.isEmpty()) {
+				responseData = new ResponseData(HttpStatus.OK.value(), "Success", list);
+			} else {
+				List<String> errorList = new ArrayList<>();
+				errorList.add("Currently, there is no project available");
+				responseData = new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found", errorList);
+
+			}
+		} catch (Exception e) {
+			List<String> errorList = new ArrayList<>();
+			errorList.add("Some temporary error occured " + e.getMessage().toString());
+			return new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found", errorList);
 		}
+
+		return responseData;
+
 	}
 
 	@RequestMapping(value = "/projects/{id}", method = RequestMethod.GET)
 	public ResponseData findProjectById(@PathVariable("id") Long id) {
-		Project project = projectService.findProjectById(id);
-		System.out.println("Project ====: " + project);
-		if (project != null) {
-			ResponseData responseData = new ResponseData(HttpStatus.OK.value(), "Success", project);
-			return responseData;
-		} else {
-			ResponseData responseData = new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found", null);
-			return responseData;
+		ResponseData responseData = null;
+		try {
+			Project project = projectService.findProjectById(id);
+			if (project != null) {
+				responseData = new ResponseData(HttpStatus.OK.value(), "Success", project);
+
+			} else {
+				responseData = new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found",
+						"Requested project not available");
+
+			}
+
+		} catch (Exception e) {
+			return new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found",
+					"Requested project not available " + e.getMessage().toString());
 		}
+		return responseData;
+
 	}
 
 	@RequestMapping(value = "/projects", method = RequestMethod.POST)
 	public ResponseData addProject(@Valid @RequestBody ProjectDto projectDto) {
-		System.out.println("test1===========");
-		Project project = projectService.addProject(projectDto);
-		ResponseData responseData = new ResponseData(HttpStatus.CREATED.value(), "Project added", project);
+		ResponseData responseData = null;
+		try {
+			Project project = projectService.addProject(projectDto);
+			responseData = new ResponseData(HttpStatus.CREATED.value(), "Project added", project);
+		} catch (Exception e) {
+			return new ResponseData(HttpStatus.BAD_REQUEST.value(), "Invalid Project",
+					"You have used invalid project " + e.getMessage().toString());
+		}
 		return responseData;
 
 	}
 
 	@RequestMapping(value = "/projects", method = RequestMethod.PUT)
 	public ResponseData updateProject(@Valid @RequestBody ProjectDto projectDto) {
-		System.out.println("test4===========");
-		Project project = projectService.updateProject(projectDto);
-		ResponseData responseData = new ResponseData(HttpStatus.ACCEPTED.value(), "Project Updated", project);
+		ResponseData responseData = null;
+		try {
+			Project project = projectService.updateProject(projectDto);
+			responseData = new ResponseData(HttpStatus.ACCEPTED.value(), "Project Updated", project);
+		} catch (Exception e) {
+			return new ResponseData(HttpStatus.BAD_REQUEST.value(), "Invalid Project",
+					"You have used invalid project " + e.getMessage().toString());
+		}
 		return responseData;
 	}
 
 	@RequestMapping(value = "/projects/{id}", method = RequestMethod.DELETE)
 	public ResponseData deleteProject(@PathVariable("id") Long id) {
-		Project project = projectService.findProjectById(id);
-		Boolean isExist = projectService.isExistProject(id);
 		ResponseData responseData = null;
-		if (isExist) {
-			projectService.deleteProject(id);
-			responseData = new ResponseData(HttpStatus.ACCEPTED.value(), "Project Deleted", project);
-		} else {
-			responseData = new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found", null);
-		}
+		try {
+			Project project = projectService.findProjectById(id);
+			Boolean isExist = projectService.isExistProject(id);
+			if (isExist) {
+				projectService.deleteProject(id);
+				responseData = new ResponseData(HttpStatus.ACCEPTED.value(), "Project Deleted", project);
+			} else {
+				responseData = new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found",
+						"Requested project not available");
+			}
 
+		} catch (Exception e) {
+			return new ResponseData(HttpStatus.NOT_FOUND.value(), "Not Found",
+					"Requested project not available " + e.getMessage().toString());
+		}
 		return responseData;
 
 	}

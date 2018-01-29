@@ -45,7 +45,6 @@ public class UserAdminControllerTest {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/admin/projects").headers(httpHeaders)
 				.accept(MediaType.APPLICATION_JSON);
 		MvcResult result = mvc.perform(requestBuilder).andReturn();
-		System.out.println("=================code=" + result.getResponse().getStatus());
 		assertEquals(result.getResponse().getStatus(), 200);
 		assertEquals(result.getResponse().getContentType(), "application/json;charset=UTF-8");
 
@@ -56,7 +55,6 @@ public class UserAdminControllerTest {
 		Gson gson = new Gson();
 		ResponseData responseData = gson.fromJson(result.getResponse().getContentAsString(), ResponseData.class);
 		assertEquals(responseData.getCode().intValue(), 404);
-		System.out.println("=================code2=" + result.getResponse().getStatus());
 		assertEquals(result.getResponse().getContentType(), "application/json;charset=UTF-8");
 
 	}
@@ -71,7 +69,6 @@ public class UserAdminControllerTest {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/admin/projects/" + id).headers(httpHeaders)
 				.accept(MediaType.APPLICATION_JSON);
 		MvcResult result = mvc.perform(requestBuilder).andReturn();
-		System.out.println("=================code3=" + result.getResponse().getStatus());
 		assertEquals(result.getResponse().getStatus(), 200);
 		assertEquals(result.getResponse().getContentType(), "application/json;charset=UTF-8");
 
@@ -82,7 +79,6 @@ public class UserAdminControllerTest {
 		Gson gson = new Gson();
 		ResponseData responseData = gson.fromJson(result.getResponse().getContentAsString(), ResponseData.class);
 		assertEquals(responseData.getCode().intValue(), 404);
-		System.out.println("=================code4=" + result.getResponse().getStatus());
 		assertEquals(result.getResponse().getContentType(), "application/json;charset=UTF-8");
 
 	}
@@ -117,7 +113,6 @@ public class UserAdminControllerTest {
 		MvcResult result = mvc.perform(requestBuilder).andReturn();
 		Gson gson = new Gson();
 		ResponseData responseData = gson.fromJson(result.getResponse().getContentAsString(), ResponseData.class);
-		System.out.println("=================code4=" + result.getClass());
 		assertEquals(responseData.getCode().intValue(), 202);
 		assertEquals(result.getResponse().getContentType(), "application/json;charset=UTF-8");
 
@@ -137,7 +132,6 @@ public class UserAdminControllerTest {
 		Gson gson = new Gson();
 		ResponseData responseData = gson.fromJson(result.getResponse().getContentAsString(), ResponseData.class);
 		assertEquals(responseData.getCode().intValue(), 202);
-		System.out.println("=================code6=" + responseData.getCode().intValue());
 		assertEquals(result.getResponse().getContentType(), "application/json;charset=UTF-8");
 
 		when(projectService.isExistProject(anyLong())).thenReturn(false);
@@ -147,7 +141,6 @@ public class UserAdminControllerTest {
 		result = mvc.perform(requestBuilder).andReturn();
 		responseData = gson.fromJson(result.getResponse().getContentAsString(), ResponseData.class);
 		assertEquals(responseData.getCode().intValue(), 404);
-		System.out.println("=================code7=" + responseData.getCode().intValue());
 		assertEquals(result.getResponse().getContentType(), "application/json;charset=UTF-8");
 
 	}
