@@ -23,6 +23,7 @@ public class JwtGenerator {
 
 	public TokenData generate(User user) {
 		Claims claims = Jwts.claims().setSubject(user.getFirstName());
+		claims.put("firstName", String.valueOf(user.getFirstName()));
 		claims.put("userId", String.valueOf(user.getUserId()));
 		claims.put("userRole", user.getUserRole());
 		// System.out.println("Findd========" + user.getUserRole() + "" + "======" +
@@ -32,7 +33,8 @@ public class JwtGenerator {
 		UserDto userDto = userService.userDisassembler(userEntity);
 		// System.out.println("Entity Id========" +
 		// userService.findUserById(user.getUserId()));
-		if (userDto != null && userDto.getUserRole().equals("admin")) {
+		if (userDto != null && userDto.getUserRole().equals("admin") 
+				&& String.valueOf(user.getFirstName()).equals(userDto.getFirstName())) {
 			System.out.println("role======" + userDto.getUserRole());
 			String token = Jwts.builder().setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 					.setClaims(claims).signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
