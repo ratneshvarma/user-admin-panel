@@ -35,8 +35,10 @@ public class UserServiceImpl implements IUserService {
 		user.setLastName(userDto.getLastName());
 		user.setMobile(userDto.getMobile());
 		user.setUserRole(userDto.getUserRole());
-
-		return userRepository.save(user);
+        System.out.println("from add======"+userDto.getFirstName());
+        User savedUser = userRepository.save(user);
+       // System.out.println("from add111======"+savedUser.getFirstName());
+		return savedUser;
 	}
 
 	@Override
