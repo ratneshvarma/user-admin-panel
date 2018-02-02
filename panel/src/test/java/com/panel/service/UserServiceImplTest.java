@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -39,7 +38,7 @@ public class UserServiceImplTest {
 	private IUserService userService;
 	@MockBean
 	private IUserRepository userRepository;
-
+	
 //	@Before
 //	public void setUp() {
 //		User user = new User();
@@ -51,8 +50,8 @@ public class UserServiceImplTest {
 //		when(userRepository.findOne(user.getUserId())).thenReturn(user);
 //	}
 
-	 @Value("${spring.datasource.url}")
-	 private String test;
+	@Value("${spring.datasource.url}")
+	private String test;
 	 
 	@Test
 	public void getUserById() {

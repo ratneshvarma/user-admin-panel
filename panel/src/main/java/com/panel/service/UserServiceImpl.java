@@ -2,34 +2,43 @@ package com.panel.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.panel.dto.UserDto;
 import com.panel.entity.User;
+import com.panel.properties.ApplicationPropertiesConfig;
 import com.panel.repository.IUserRepository;
 
 @Service
 public class UserServiceImpl implements IUserService {
-
+	private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
 	@Autowired
 	private IUserRepository userRepository;
+//	@Autowired
+//	private ApplicationPropertiesConfig applicationPropertiesConfig;
 
 	@Override
 	public User findUserById(Long id) {
+		logger.info("findUserById Started");
 		User user = userRepository.findOne(id);
+		logger.info("findUserById finish");
 		return user;
 	}
 
 	@Override
 	public List<User> findAllUser() {
+		//System.out.println("User: "+applicationPropertiesConfig.getUser()+"======"+applicationPropertiesConfig.getMessage());
+		logger.info("findAllUser started");
 		List<User> user = userRepository.findAll();
+		logger.info("findAllUser finish");
 		return user;
 	}
 
 	@Override
 	public User addUser(UserDto userDto) {
-
+		logger.info("User Addind Begin" + userDto.getFirstName());
 		User user = new User();
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
@@ -37,7 +46,7 @@ public class UserServiceImpl implements IUserService {
 		user.setUserRole(userDto.getUserRole());
         System.out.println("from add======"+userDto.getFirstName());
         User savedUser = userRepository.save(user);
-       // System.out.println("from add111======"+savedUser.getFirstName());
+        logger.info("User Adding Finished" + userDto.getFirstName());
 		return savedUser;
 	}
 
