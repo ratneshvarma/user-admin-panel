@@ -11,9 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.panel.dto.UserDto;
@@ -21,6 +23,7 @@ import com.panel.entity.User;
 import com.panel.repository.IUserRepository;
 
 @RunWith(SpringRunner.class)
+@TestPropertySource("classpath:application.properties")
 public class UserServiceImplTest {
 
 	@TestConfiguration
@@ -35,7 +38,7 @@ public class UserServiceImplTest {
 	private UserServiceImpl userService;
 	@MockBean
 	private IUserRepository userRepository;
-
+	
 //	@Before
 //	public void setUp() {
 //		User user = new User();
@@ -47,8 +50,12 @@ public class UserServiceImplTest {
 //		when(userRepository.findOne(user.getUserId())).thenReturn(user);
 //	}
 
+	@Value("${spring.datasource.url}")
+	private String test;
+	 
 	@Test
 	public void getUserById() {
+		System.out.println("Test Value========="+test);
 		User user = new User();
 		user.setUserId(2L);
 		user.setFirstName("Jay");
