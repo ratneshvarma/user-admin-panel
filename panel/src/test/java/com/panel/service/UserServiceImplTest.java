@@ -32,7 +32,7 @@ public class UserServiceImplTest {
 	}
 
 	@Autowired
-	private IUserService userService;
+	private UserServiceImpl userService;
 	@MockBean
 	private IUserRepository userRepository;
 
